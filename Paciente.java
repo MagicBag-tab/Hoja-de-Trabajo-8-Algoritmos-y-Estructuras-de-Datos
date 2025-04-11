@@ -1,7 +1,7 @@
 /*
  * Clase paciente que tiene todos los métodos y atributos necesarios que conforman al paciente
  */
-public class Paciente {
+public class Paciente implements Comparable<Paciente> {
 
     private String name;
     private String symptom;
@@ -17,29 +17,21 @@ public class Paciente {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getSymptom() {
         return symptom;
-    }
-
-    public void setSymptom(String symptom) {
-        this.symptom = symptom;
     }
 
     public String getPriority() {
         return priority;
     }
 
-    public void setPriority(String priority) {
-        this.priority = priority;
+    @Override
+    public String toString() {
+        return name + ", " + symptom + ", " + priority;
     }
 
     @Override
-    public String toString() {
-        return "Paciente [name=" + name + ", symptom=" + symptom + ", priority=" + priority + "]";
+    public int compareTo(Paciente other) {
+        return this.priority.compareTo(other.priority);
     }
-
 }
