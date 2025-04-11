@@ -1,64 +1,64 @@
 /*
- * 
  * Clade de Vector Heap
  * Se utilizo el libro de la clase para poder realizar los métodos y atributos
  * El capítulo es el de PriorityQueue en la seección de Vector Heap
  */
 
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.Vector;
+import java.util.*;
 
-public class VectorHeap<E> implements PriorityQueue<E> {
+/**
+ * Implementación de una PriorityQueue utilizando un Heap basado en un Vector.
+ */
+public class VectorHeap<E extends Comparable<E>> implements PriorityQueue<E> {
     protected Vector<E> data;
     private static final int capacity = 10;
-    private Comparator<E> comparator;
 
+    /*
+     * Crea una cola con prioridad con capacidad fija.
+     */
     public VectorHeap() {
-        this.comparator = new Comparator<E>() {
-            @Override
-            public int compare(E e1, E e2) {
-                Paciente p1 = (Paciente) e1;
-                Paciente p2 = (Paciente) e2;
-
-                return p1.getPriority().compareTo(p2.getPriority());
-            }
-        };
         this.data = new Vector<E>(capacity);
     }
 
+    /*
+     * Agrega un elemento a la cola manteniendo el orden del heap
+     */
     @Override
     public boolean offer(E e) {
-        if (data.size() >= capacity) {
+        if (data.size() >= capacity)
             return false;
-        }
         data.add(e);
         percolateUp(data.size() - 1);
         return true;
     }
 
+    /*
+     * Elimina y retorna el elemento con mayor prioridad
+     */
     @Override
     public E poll() {
         if (data.isEmpty())
             return null;
 
         E minVal = data.get(0);
-        int lastIndex = data.size() - 1;
-        data.set(0, data.get(lastIndex));
-        data.setSize(lastIndex);
-        if (!data.isEmpty()) {
+        data.set(0, data.get(data.size() - 1));
+        data.setSize(data.size() - 1);
+        if (!data.isEmpty())
             pushDownRoot(0);
-        }
         return minVal;
     }
 
+    /*
+     * Obtiene el elemento con mayor prioridad sin eliminarlo.
+     */
     @Override
     public E peek() {
-        if (data.isEmpty())
-            return null;
-        return data.get(0);
+        return data.isEmpty() ? null : data.get(0);
     }
 
+    /*
+     * Retorna el tamaño actual de la cola.
+     */
     @Override
     public int size() {
         return data.size();
@@ -78,13 +78,16 @@ public class VectorHeap<E> implements PriorityQueue<E> {
     }
 
     protected static int right(int i) {
-        return 2 * (i + 1);
+        return 2 * i + 2;
     }
 
+    /*
+     * Reorganiza el heap hacia arriba desde una hoja.
+     */
     protected void percolateUp(int leaf) {
         int parent = parent(leaf);
         E value = data.get(leaf);
-        while (leaf > 0 && comparator.compare(data.get(parent), value) > 0) {
+        while (leaf > 0 && data.get(parent).compareTo(value) > 0) {
             data.set(leaf, data.get(parent));
             leaf = parent;
             parent = parent(leaf);
@@ -92,26 +95,26 @@ public class VectorHeap<E> implements PriorityQueue<E> {
         data.set(leaf, value);
     }
 
+    /*
+     * Reorganiza el heap hacia abajo desde la raíz.
+     */
     protected void pushDownRoot(int root) {
         int heapSize = data.size();
         E value = data.get(root);
         while (root < heapSize) {
             int childpos = left(root);
             if (childpos < heapSize) {
-                if (right(root) < heapSize && comparator.compare(data.get(childpos + 1), data.get(childpos)) < 0) {
+                if (right(root) < heapSize && data.get(childpos + 1).compareTo(data.get(childpos)) < 0) {
                     childpos++;
                 }
-                if (comparator.compare(data.get(childpos), value) < 0) {
+                if (data.get(childpos).compareTo(value) < 0) {
                     data.set(root, data.get(childpos));
                     root = childpos;
-                } else {
-                    data.set(root, value);
-                    return;
-                }
-            } else {
-                data.set(root, value);
-                return;
-            }
+                } else
+                    break;
+            } else
+                break;
         }
+        data.set(root, value);
     }
 }
