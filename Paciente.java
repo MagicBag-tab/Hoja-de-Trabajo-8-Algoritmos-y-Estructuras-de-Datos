@@ -1,5 +1,6 @@
 /*
- * Clase paciente que tiene todos los métodos y atributos necesarios que conforman al paciente
+ * Clase paciente que tiene todos los métodos y atributos necesarios que conforman la clase pacientes y posee 
+ * comparable para realizar el ordenamiento por prioridad. 
  */
 public class Paciente implements Comparable<Paciente> {
 
