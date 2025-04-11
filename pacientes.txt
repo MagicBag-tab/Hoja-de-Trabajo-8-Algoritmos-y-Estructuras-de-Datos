@@ -1,3 +1,4 @@
 Juan,Dolor de cabeza,A
 Maria,Fiebre,B
 Pedro,Fractura,C
+Marta, Dolor de cabeza, A

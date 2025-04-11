@@ -30,11 +30,12 @@ public class Main {
 
             switch (op) {
                 case 1:
-                    // Usar VectorHeap
                     PriorityQueue<Paciente> colaVector = Factory.crearPriorityQueue(1, pacientes);
                     System.out.println("Orden de atención de los pacientes");
                     while (colaVector.size() > 0) {
-                        colaVector.poll();
+                        Paciente p = colaVector.poll();
+                        System.out.println("Siguiente paciente a atender: " + p.getName() + ", " +
+                                p.getSymptom() + ", Prioridad: " + p.getPriority());
                     }
                     break;
 
